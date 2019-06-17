@@ -1,0 +1,62 @@
+1、没登录跳转到认证中心进行登录认证
+2、认证成功后返回token 
+3、校验token
+
+
+进入系统—-> 跳转认证服务器进行登录--> 认证服务器获取token-> 
+
+登录方法loginModify
+//shiro加入身份验证
+Session session = SecurityUtils.getSubject().getSession();
+session.setAttribute(Constants.SESSION_USER, user);
+session.setAttribute(Constants.SESSION_USERNAME, user.getLoginUsername());
+
+Subject subject = SecurityUtils.getSubject(); 
+UsernamePasswordToken token = new UsernamePasswordToken(loginName, password);
+try { 
+	subject.login(token); 
+} catch (AuthenticationException e) { 
+	e.printStackTrace();
+}
+
+'http://localhost:8300/oauth/authorize?client_id=ums-admin-client&redirect_uri=http://localhost:8201/login&response_type=code&state=8dPsDZ'
+
+
+<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<property name="securityManager" ref="securityManager" />
+	<!-- 登录路径 -->
+	<property name="loginUrl" value="/" />
+	<!-- 登录成功跳转路径 -->
+	<property name="successUrl" value="/index" />
+	<!-- 无权限跳转路径 -->
+	<property name="unauthorizedUrl" value="/login" />
+	<!-- 过滤链定义 anno代表不需要授权即可访问，对于静态资源，访问权限都设置为anno
+	，authc表示需要登录才可访问--> 
+	<property name="filterChainDefinitions">
+		<value>
+		/AppChatMessageService/**		= anon
+		/AppService/**		= anon
+		/js/** 						= anon
+		/css/** 					= anon
+		/swagger/** 				= anon
+		/swagger-resources/**          = anon
+<!-- 				/configuration/ui              = anon -->
+		/v2/**                         = anon
+		/configuration/**              = anon
+		/generateImageCode/**		    = anon
+		/checkLoginName/**			    = anon
+		/loginModify/**				= anon
+		/api/**						= anon
+		/commandfeedback/**			= anon
+		/security/**				= anon
+		/opt/**						= anon
+		/swagger-ui.html/**          = anon
+<!-- 				/swagger-ui.html             = anon -->
+		/shuangliuController/**		= anon
+		/login 						= anon
+		/**						    = anon
+<!-- 	           	/                           = anon -->
+	   
+		</value>
+	</property>
+</bean>

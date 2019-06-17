@@ -1,0 +1,41 @@
+获取域名
+1、方法一
+
+var domain = document.domain;
+2、方法二
+var domain = window.location.host;
+
+StringBuffer url = req.getRequestURL();  
+String tempContextUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).append(req.getServletContext().getContextPath()).append("/").toString();
+
+
+Android返回上一页并刷新
+history.go(-1); 
+location.reload(); 返回上一页并刷新 ios会出现问题不会返回上一页 会直接执行reload Android可以 
+ios返回上一页并刷新
+history.go(-1); 
+在上一页监听页面显示
+window.onpageshow = function(event){
+	if (event.persisted) {
+		window.location.reload();
+	}
+}
+
+公厕搜索方法
+https://m.amap.com/search/mapview/keywords=公厕&cluster_state=5&pagenum=1 高德
+http://map.qq.com/m/nearby/result/word=公厕&centerX=103.837210&centerY=30.697770 腾讯
+
+https://m.amap.com/search/view/keywords=公厕
+https://m.amap.com/search/view/adcode=510100&longitude=103.81698&latitude=30.749163&user_loc=103.81698,30.749163&city=成都市&cityCode=510100&location=四川省成都市温江区绿园路665号&fromPlaceSearch=false&keywords=景点&type=nearby&cluster_state=5&pagenum=5&classify0=query_type=rqbxy;range=10000;is_uma=true;cur_adcode=510100&classify1=reserved_keywords=true&classify2=sort_rule=1;reserved_keywords=true 高德搜索条件
+ https://m.amap.com/search/view/adcode=510100&longitude=103.81698&latitude=30.749163&user_loc=103.856646,30.682203&city=%E6%88%90%E9%83%BD%E5%B8%82&cityCode=510100&location=%E5%9B%9B%E5%B7%9D%E7%9C%81%E6%88%90%E9%83%BD%E5%B8%82%E6%B8%A9%E6%B1%9F%E5%8C%BA&fromPlaceSearch=false&keywords=%E5%85%AC%E5%8E%95&type=nearby&cluster_state=5&pagenum=5&classify0=query_type=rqbxy;range=8000;is_uma=true;cur_adcode=510100&classify1=reserved_keywords=true&classify2=sort_rule=1;reserved_keywords=true 公厕
+ 
+ https://m.amap.com/search/view/adcode=510100&longitude=103.781843&latitude=30.696501&user_loc=103.781843,30.696501&city=%E6%88%90%E9%83%BD%E5%B8%82&cityCode=510100&location=%E5%9B%9B%E5%B7%9D%E7%9C%81%E6%88%90%E9%83%BD%E5%B8%82%E6%B8%A9%E6%B1%9F%E5%8C%BA&fromPlaceSearch=false&keywords=%E6%99%AF%E7%82%B9&type=nearby&cluster_state=5&pagenum=5&classify0=query_type=rqbxy;range=8000;is_uma=true;cur_adcode=510100&classify1=reserved_keywords=true&classify2=sort_rule=1;reserved_keywords=true 景点
+  
+
+git checkout master // 切换到旧的分支
+git reset --hard develop // 将本地的旧分支 master 重置成 develop
+git push origin master --force // 再推送到远程仓库
+
+
+git rebase -i 需要合并的commit的上一个 commit号
+git log --graph 图例

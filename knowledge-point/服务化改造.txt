@@ -1,0 +1,127 @@
+﻿地理区域 district_code
+权属区域 belong_district_code
+
+市级监督发现问题区域
+district_code 510112 龙泉驿区
+belong_district_code 5101 成都市
+市级判定问题归属区域(市级批转送达归属区域)
+district_code 510112 龙泉驿区
+belong_district_code 510112 龙泉驿区
+区级派问题至本级部门
+department_id 龙泉驿区经信局
+
+
+
+
+ums-platform 	[城市综合管理服务平台 urban-integrated-management-service-platform]
+|-- ums-ui			[前端界面]
+|-- ums-admin		[系统管理]
+|-- ums-message		[消息服务]
+
+-------------------------------------
+|-- ums-urged		[督办服务]
+-------------------------------------
+|-- ums-complain	[投诉服务]
+-------------------------------------
+|-- ums-patrol		[巡查服务]  
+|-- ums-accept		[受理服务]
+|-- ums-dispatch	[派遣服务]
+|-- ums-dispose		[处置服务]
+|-- ums-query 		[查询服务]
+|-- ums-statistics 	[统计服务]
+-------------------------------------
+|-- ums-census		[普查服务]
+-------------------------------------
+|-- ums-citizen		[市民服务]
+-------------------------------------
+
+
+巡查服务接口
+////////////////////////////////////////////
+/patrol/event/report/v1		[巡查事件上报接口]
+function patrolEventReport
+/patrol/event/query/v1		[巡查事件查询接口]
+function patrolEventQuery
+/patrol/event/verify/v1		[巡查事件核实接口]
+function patrolEventVerify
+/patrol/event/check/v1		[巡查事件核查接口]
+function patrolEventCheck
+/patrol/event/dispose/v1    [巡查事件自处接口]
+function patrolEventDispose
+
+普查服务接口
+////////////////////////////////////////////
+/census/event/report/v1		[普查事件上报接口]
+function censusEventReport
+/census/event/query/v1		[普查事件查询接口]
+function censusEventQuery
+
+督办服务接口
+////////////////////////////////////////////
+/urged/event/report/v1		[督办事件上报接口]
+function urgedEventReport
+/urged/event/query/v1		[督办事件查询接口]
+function urgedEventQuery
+
+
+行政区域
+district{
+	id varchar(18)				行政区域主键
+	parent_id varchar(18)		父级行政区域
+	district_code varchar(18)	行政区域编码
+	district_name varchar(64)	行政区域名称
+}
+
+
+部门
+department{
+	id varchar(8)						部门主键
+	parent_id varchar(8)				父级部门
+	district_code varchar(18)			行政区域编码
+	department_name varchar(64) 		部门名称
+	department_path_code varchar(89)	部门路径编码
+	department_path_name varchar(256)	部门路径名称
+	department_order int				部门顺序
+	deleted int							已删除标记
+}
+
+成员
+member{
+	id varchar(32)							成员主键
+	district_code varchar(18)				行政区域编码
+	department_id varchar(8)				部门键值
+	login_account varchar(64)				成员登录账号
+	login_password varchar(32)				成员登录密码
+	nick_name varchar(64)					成员昵称
+	deleted int								已删除标记
+}
+
+
+####   服务名        端口
+* redis       ---    6379
+* ums-eureka  ---    8761
+
+* ums-gateway ---    8100
+* ums-admin   ---    8101
+* ums-census  ---    8102
+
+###client
+* ums-admin-client ---  8201
+* ums-census-client --- 8202
+
+构建服务到服务器并整改相关配置等
+Administrator
+Hjn!974791153
+
+http://180.76.245.84
+
+修改admin接口代码。原代码方式无接口
+
+解决第一次服务调用失败问题
+解决认证服务退出功能
+更新演示代码
+
+client 端调用gateway --> gateway --> 获取jwt token --> authenticationTokenFilter 进行登录成功过滤 -->
+
+
+

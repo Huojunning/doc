@@ -1,0 +1,36 @@
+为什么MYSQL要设定用UTF8MB4编码UTF8MB4_UNICODE_CI。utf8 跟utf8mb4具有相同的储存特性：相同的代码值，相同的编码，相同的长度。
+
+不过utf8mb4扩展到一个字符最多可有4位元，所以能支持更多的位元集。
+
+utf8mb4兼容utf8，且比utf8能表示更多的字串，将编码改为utf8mb4外不需要做其他转换。
+
+为了要跟国际接轨，原本的utf8编码在储存某些国家的文字(或是罕见字)已经不敷使用，
+因此在mysql 5.5.3版以上，可以使用4-Byte UTF-8 Unicode的编码方式。
+
+Tips:
+MYSQL查看版本方式：select version();
+
+utf8跟utf8mb4具有相同的储存特性：相同的代码值，相同的编码，相同的长度。
+
+不过utf8mb4扩展到一个字符最多可有4位元，所以能支持更多的位元集。
+
+utf8mb4兼容utf8，且比utf8能表示更多的字串，将编码改为utf8mb4外不需要做其他转换。
+
+utf8已经能够存下大部分的中文字，那为什么还要改成使用utf8mb4呢？
+
+原因为mysql支持的utf8编码最大长度为3位元(Unicode字符是0xffff)称之Unicode的基本多文种平面(BMP)，但如果遇到4位元的宽字串就会插入异常了，也就是任何不在基本多文本平面的Unicode字串，都无法使用Mysql的utf8字串集储存。
+
+如果要开发讨论区或是大型跨国网页程式，为了拥有更加的文字兼容性，就可以使用utf8mb4。
+
+然而，在CHAR类型数据，utf8mb4会比utf8多消耗一些空间，故Mysql官方指出，使用VARCHAR替代CHAR。
+
+最后，到底要用utf8mb4_general_ci还是utf8mb4_unicode_ci呢？
+
+建议使用：utf8mb4_unicode_ci
+
+这两种排序规则都是为UTF-8字符编码。
+utf8mb4_unicode_ci使用标准的Unicode Collat??ion Algorithm(UCA)，
+utf8mb4_general_ci比utf8mb4_unicode_ci速度要来得快，
+但是utf8mb4_unicode_ci比utf8mb4_general_ci要来得精确。
+像是” ?”，若是以utf8mb4_general_ci运作，会转成”s”，
+而utf8mb4_unicod e_ci则是会转成”ss”。

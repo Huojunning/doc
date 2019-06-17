@@ -1,0 +1,577 @@
+知识点
+spring aop 
+Spring AOP的底层就是通过代理（JDK动态代理或CGlib代理）来实现AOP的，但是这种实现方式存在三个明显需要改进的地方：
+
+       
+	   a.目标类的所有方法都添加了横切逻辑，而有时，这并不是我们所期望的，我们可能只希望对业务类中的某些特定的方法添加横切逻辑；
+
+       b.我们通过硬编码的方式制定了织入横切逻辑的织入点，即在目标业务方法的开始和结束前织入代码；
+
+       c.我们手工编写代理实例的创建过程，为不同类创建代理时，需要分别编写相应的创建代码，无法做到通用；
+
+    CGLib所创建的动态代理对象的性能比JDK的高大概10倍，但CGLib在创建代理对象的时间比JDK大概多8倍，所以对于singleton(单例模式)的代理对象或者具有实例池的代理，
+	因为无需重复的创建代理对象，所以比较适合CGLib动态代理技术，反之选择JDK代理。值得一提的是由于CGLib采用动态创建子类的方式生成代理对象，所以不能对目标类中final的方法进行代理。
+	jdk 动态代理必须基于接口 而 CGLIB动态代理 代理没有任何接口的类
+Spring Aop采用的动态织入，而Aspectj是静态织入。静态织入：指在编译时期就织入，即：编译出来的class文件，字节码就已经被织入了。
+动态织入又分静动两种，静则指织入过程只在第一次调用时执行；动则指根据代码动态运行的中间状态来决定如何操作，每次调用Target的时候都执行。
+AOP现有两个主要的流行框架，即Spring AOP和Spring+AspectJ
+spring aop 1编程式（基于aop接口，实现aop提供的相关接口）2声明式（基于配置）手工代理和自动代理（自动代理扫码bean名称 扫码切面配置）
+spring AspectJ 基于注解（@Aspect）基于配置<aop:config>
+
+
+linux 命令;
+wget 类似于迅雷，是一种下载工具，通过HTTP、HTTPS、FTP三个最常见的TCP/IP协议下载，并可以使用HTTP代理名字是World Wide Web”与“get”的结合。
+yum: 是redhat, centos 系统下的软件安装方式，基于Linux 全称为 Yellow dog Updater, Modified，是一个在Fedora和RedHat以及CentOS中的Shell前端软件包管理器
+基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包。
+rpm:  软件管理;   redhat的软件格式 rpm   r=redhat  p=package   m=management用于安装 卸载 .rpm软件
+串联下：
+   使用wget下载一个 rpm包, 然后用 rpm -ivh  xxx.rpm  安装这个软件，嫌麻烦的话，就
+
+   可以直接用  yum  install  sqoop   来自动下载和安装依赖的rpm软件。
+ap-get是ubuntu下的一个软件安装方式，它是基于debain。
+
+# uname -a # 查看内核/操作系统/CPU信息 
+# head -n 1 /etc/issue # 查看操作系统版本 
+# cat /proc/cpuinfo # 查看CPU信息 
+# hostname # 查看计算机名 
+# lspci -tv # 列出所有PCI设备 
+# lsusb -tv # 列出所有USB设备 
+# lsmod # 列出加载的内核模块 
+# env # 查看环境变量资源 
+# free -m # 查看内存使用量和交换区使用量 
+# df -h # 查看各分区使用情况 
+# du -sh <目录名> # 查看指定目录的大小 
+# grep MemTotal /proc/meminfo # 查看内存总量 
+# grep MemFree /proc/meminfo # 查看空闲内存量 
+# uptime # 查看系统运行时间、用户数、负载 
+# cat /proc/loadavg # 查看系统负载磁盘和分区 
+# mount | column -t # 查看挂接的分区状态 
+# fdisk -l # 查看所有分区 
+# swapon -s # 查看所有交换分区 
+# hdparm -i /dev/hda # 查看磁盘参数(仅适用于IDE设备) 
+# dmesg | grep IDE # 查看启动时IDE设备检测状况网络 
+# ifconfig # 查看所有网络接口的属性 
+# iptables -L # 查看防火墙设置 
+# route -n # 查看路由表 
+# netstat -lntp # 查看所有监听端口 
+# netstat -antp # 查看所有已经建立的连接 
+# netstat -s # 查看网络统计信息进程 
+# ps -ef # 查看所有进程 
+# top # 实时显示进程状态用户 
+# w # 查看活动用户 
+# id <用户名> # 查看指定用户信息 
+# last # 查看用户登录日志 
+# cut -d: -f1 /etc/passwd # 查看系统所有用户 
+# cut -d: -f1 /etc/group # 查看系统所有组 
+# crontab -l # 查看当前用户的计划任务服务 
+# chkconfig –list # 列出所有系统服务 
+# chkconfig –list | grep on # 列出所有启动的系统服务程序 
+# rpm -qa # 查看所有安装的软件包
+
+jobs 查看后台正在运行
+fg 后台运行切换到前台
+apt-get ubuntu安装命令
+ps 查看正在运行程序
+kill 杀掉运行程序
+cd /目录 进入目录 ./操作当前目录
+vim 查看文件命令 
+jps java 运行
+netstat -an | grep 3306   //查看所有3306端口使用情况·
+
+mkdir 目录 创建目录
+touch 文件 新建文件
+ls *.pem | xargs rm -fr 删除ls 查找出来的文件
+
+别名定义
+alias 别名=原名
+
+docker cloud 账号
+huojunning 974791153
+
+sudo su 切换管理员 
+su 用户名 切换用户
+1、docker -h 帮助
+2、获取镜像
+sudo docker pull NAME[:TAG]
+sudo docker pull centos:latest
+3、启动Container盒子
+sudo docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+sudp docker run -t -i contos /bin/bash
+4、查看镜像列表，列出本地的所有images
+sudo docker images [OPTIONS] [NAME]
+sudo docker images centos
+5、查看容器列表，可看到我们创建过的所有container
+sudo docker ps [OPTIONS]
+sudo docker ps -a
+6、删除镜像，从本地删除一个已经下载的镜像
+sudo docker rmi IMAGE [IMAGE...]
+sudo docker rmi centos:latest
+7、移除一个或多个容器实例
+sudo docker rm [OPTIONS] CONTAINER [CONTAINER...]
+移除所有微运行的容器
+sudo docker rm sudo docker ps -aq
+8、停止一个正在运行的容器
+sudo docker kill [OPTIONS] CONTAINER [CONTAINNER...]
+sudo docker kill 026e
+9、重启一个正在运行的容器
+sudo docker restart [OPTIONS] contains[CONTAINER]
+sudo docker restart 026e
+10、停止一个已经停止的容器
+sudo docker start [OPTIONS] CONTAINER [CONTAINER..]
+sudo docker start 026e
+
+sudo snap list
+列出已经安装的snap包
+sudo snap find <text to search>
+搜索要安装的snap包
+sudo snap install <snap name>
+安装一个snap包
+sudo snap refresh <snap name>
+更新一个snap包，如果你后面不加包的名字的话那就是更新所有的snap包
+sudo snap revert <snap name>
+把一个包还原到以前安装的版本
+sudo snap remove <snap name>
+删除一个snap包
+
+
+docker 开启远程访问
+vim /usr/lib/systemd/system/docker.service 不行的话 vi /lib/systemd/system/docker.service
+
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock
+
+#重新加载配置文件
+systemctl daemon-reload  
+
+#重启服务
+systemctl restart docker.service 
+
+#查看端口是否开启
+netstat -nptl
+
+#直接curl看是否生效
+curl http://127.0.0.1:2375/info
+
+①docker ps XXX 显示当前正在运行的容器
+②docker ps -a XXX 显示所有的容器
+③docker inspect XXX 显示容器详情，基本所有信息都有
+④docker logs XXX 显示容器的启动日志（这个特别强调，除了我们说的把容器日志挂载出来还可以查看这个日志。区别：挂载出来的是程序自己的日志，这个是容器的启动日志，小编有好几次线上出bug都是通过这个命令找到原因！）
+⑤docker images 显示日志列表
+⑥docker stop XXX 停止容器
+⑦docker start XX 开启容器
+⑧docker restart XXX 重启容器
+⑨ docker rm XXX 删除已经停止的容器（正在运行的删不了）
+⑩docker rm -f XXX 删除容器（停止、运行的容器）
+⑪docker exec -it XXX /bin/bash 进入容器内部
+⑫docker cp XXX：要拷贝的文件在容器里面的路径 要拷贝到宿主机的相应路径（从容器里拷贝文件到主机）
+⑬docker cp 要拷贝到宿主机的相应路径 XXX：要拷贝的文件在容器里面的路径（从主机拷贝文件到容器里）
+⑭docker export XXX > test.tar 导出容器
+⑮sudo docker import - test/tomcat:1.0.1 导入容器
+⑯docker search tomcat 查找tomcat的docker官方镜像
+⑰docker pull 镜像名 （拉取镜像）
+⑱docker tag 镜像ID 名字:版本 （修改镜像名字）
+⑲docker events --since="1467302400" （查看docker时间，since按时间戳，f按条件，）
+⑳docker push 镜像名:版本 推送你的镜像到你的仓库或者github上
+
+查看容器ip地址
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' <container-ID> 
+查看容器配置
+docker inspect <container id> 
+查看容器ip地址
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
+显示所有容器ip
+docker inspect --format='{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
+
+搜索所有name 包含ums 的容器
+docker ps -a --filter name=.*ums.*
+
+docker -d 后台运行 -p 端口映射 8080:8080 前面的端口表示映射到服务器地址也就是本地端口 后面的端口指容器内启动的端口
+
+将主机D//DOC//urbanmis//urbanmis.war目录拷贝到容器882bef3620cc的/usr/local/tomcat/webapps目录下。
+docker cp /DOC//urbanmis//urbanmis.war 882bef3620cc:/usr/local/tomcat/webapps
+将容器882bef3620cc的/usr/local/tomcat/webapps目录下拷贝到主机D//DOC//urbanmis//urbanmis.war目录。
+docker cp  882bef3620cc:/usr/local/tomcat/webapps /d//DOC//urbanmis//urbanmis.war
+
+tag 改名 docker tag 镜像ID 名/名
+docker tag 3bd2787b9fa3 a1030907690/ubuntu:latest 
+
+//搜索镜像
+docker search 镜像名
+/进入容器
+docker attach
+/登录
+docker login
+
+持续输出前100行docker 日志 -f持续输出
+docker logs -f -t --tail=100 容器id
+
+
+我们还可以通过指定参数，启动一个bash交互终端。 加入-d 后台执行
+docker run -it -p 用户名/镜像:tag /bin/bash
+
+在Docker查看正在运行的容器是通过什么命令启动的：
+docker ps -a --no-trunc
+
+导出镜像 cbe3cb7799ed容器id update.tar[导出地址及名字]
+docker export cbe3cb7799ed > update.tar	
+创建一个新静像从基于导出的文件
+docker import - update < update.tar
+
+根据镜像id 进行已有的镜像更名更改标签
+docker tag e6686c377f93 tomcat-urbanmis:v1
+
+docker 私服https 
+vi /etc/default/docker 修改配置
+镜像上传 私服地址/名字 192.168.0.240:5000/docker-test
+镜像查看curl -X GET http://192.168.0.240:5000/v2/_catalog
+
+window docker  
+修改docker 配置 docker-machine ssh
+docker-machine ssh default
+我们需要编辑 /var/lib/boot2docker/profile 文件中的 EXTRA_ARGS 信息，向其中加入我们需要的设置：
+--insecure-registry 192.168.0.240:5000
+//xxx.xxx.xxx.xxx为私有镜像的ip地址
+//yyy为预设的私有镜像的端口号
+docker-machine restart 
+
+container_linux.go:393: signaling init process caused "permission denied" docker top 无法使用时 参考链接https://forums.docker.com/t/can-not-stop-docker-container-permission-denied-error/41142
+--对于任何不想完全清除AppArmor的人。
+
+检查状态：sudo aa-status
+
+关闭并阻止它重新启动：sudo systemctl disable apparmor.service --now 
+卸载AppArmor配置文件：sudo service apparmor teardown 
+检查状态：sudo aa-status
+
+你现在应该能够停止/杀死容器了。
+
+查看监听状态
+netstat -lnt
+
+mysql 授权
+grant all privileges on *.* to robot@'%' identified by '61384058';
+flush privileges;  刷新权限
+
+maven 打包docker 项目方式
+mvn package docker:build 打包前配置Dockerfile pom 文件中加入docker 打包插件docker-maven-plugin 目前使用版本0.4.3
+
+
+
+tomcat 扩容 JAVA_OPTS=-Xms128m -Xmx512m -XX:MaxPermSize=256m
+content.xml 下 <Resources cachingAllowed="true" cacheMaxSize="100000" />
+
+
+spring cloud 搭建
+maven 
+maven 项目构建 项目继承及子项目相互调用
+maven common 项目需先packge install 
+
+redis 远程连接问题解决
+192.168.0.77:0>auth
+"ERR wrong number of arguments for 'auth' command"
+192.168.0.77:0>auth root
+"ERR Client sent AUTH, but no password is set"
+192.168.0.77:0>config set requirepass root
+"OK"
+192.168.0.77:0>auth
+"ERR wrong number of arguments for 'auth' command"
+192.168.0.77:0>auth root
+
+
+外置配置文件
+Spring程序会按优先级从下面这些路径来加载application.properties配置文件
+
+当前目录下的/config目录
+当前目录
+classpath里的/config目录
+classpath 跟目录
+因此，要外置配置文件就很简单了，在jar所在目录新建config文件夹，然后放入配置文件，或者直接放在配置文件在jar目录
+
+自定义配置文件
+如果你不想使用application.properties作为配置文件，怎么办？完全没问题
+
+java -jar myproject.jar --spring.config.location=classpath:/default.properties,classpath:/override.properties
+或者
+
+java -jar -Dspring.config.location=D:\config\config.properties springbootrestdemo-0.0.1-SNAPSHOT.jar 
+当然，还能在代码里指定
+
+@SpringBootApplication
+@PropertySource(value={"file:config.properties"})
+public class SpringbootrestdemoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootrestdemoApplication.class, args);
+    }
+}
+按Profile不同环境读取不同配置
+不同环境的配置设置一个配置文件，例如：
+
+dev环境下的配置配置在application-dev.properties中；
+prod环境下的配置配置在application-prod.properties中。
+在application.properties中指定使用哪一个文件
+
+spring.profiles.active = dev
+当然，你也可以在运行的时候手动指定：
+
+java -jar myproject.jar --spring.profiles.active = prod
+
+
+Ant 风格路径表达式
+通配符	说明
+?	匹配任何单字符
+*	匹配0或者任意数量的字符
+**	匹配0或者更多的目录
+URL路径	说明
+/app/*.x				匹配(Matches)所有在app路径下的.x文件.
+/app/p?ttern			匹配(Matches) /app/pattern 和 /app/pXttern,但是不包括/app/pttern
+/**/example				匹配(Matches) /app/example, /app/foo/example, 和 /example
+/app/**/dir/file.*		匹配(Matches) /app/dir/file.jsp, /app/foo/dir/file.html,/app/foo/bar/dir/file.pdf, 和 /app/dir/file.java
+/**/*.jsp				匹配(Matches)任何的.jsp 文件
+属性：
+最长匹配原则(has more characters)
+说明，URL请求/app/dir/file.jsp，现在存在两个路径匹配模式/**/*.jsp和/app/dir/*.jsp，那么会根据模式/app/dir/*.jsp来匹配
+
+
+获取域名
+1、方法一
+
+var domain = document.domain;
+2、方法二
+var domain = window.location.host;
+
+StringBuffer url = req.getRequestURL();  
+String tempContextUrl = url.delete(url.length() - req.getRequestURI().length(), url.length()).append(req.getServletContext().getContextPath()).append("/").toString();
+
+
+Android返回上一页并刷新
+history.go(-1); 
+location.reload(); 返回上一页并刷新 ios会出现问题不会返回上一页 会直接执行reload Android可以 
+ios返回上一页并刷新
+history.go(-1); 
+在上一页监听页面显示
+window.onpageshow = function(event){
+	if (event.persisted) {
+		window.location.reload();
+	}
+}
+js 阻止事件冒泡
+<a href="#" ><div onclick="test(this, event)" class="txt_more">更多</div></a>
+//阻止事件冒泡函数
+function stopBubble(e) {
+	if (e && e.stopPropagation)
+		e.stopPropagation()
+	else
+		window.event.cancelBubble = true
+}
+// 阻止默认浏览器动作(W3C)
+function stopDefault(e) {
+	// 阻止默认浏览器动作(W3C)
+	if (e && e.preventDefault) {
+		e.preventDefault();
+	} else {
+		// IE中阻止函数器默认动作的方式
+		window.event.returnValue = false;
+	}
+	return false;
+}
+
+ArrayUtils
+CollectionUtils 集合工具类
+
+mybatis mapper.xml#{}和${}的区别是什么
+#{}是预编译处理，${}是字符串替换。mybatis在处理#{}时，会将sql中的#{}替换为?号，调用PreparedStatement的set方法来赋值；mybatis在处理${}时，就是把${}替换成变量的值。使用#{}可以有效的防止SQL注入，提高系统安全性。
+1）$符号一般用来当作占位符，常使用Linux脚本的人应该对此有更深的体会吧。既然是占位符，当然就是被用来替换的。知道了这点就能很容易区分$和#，从而不容易记错了。
+（2）预编译的机制。预编译是提前对SQL语句进行预编译，而其后注入的参数将不会再进行SQL编译。我们知道，SQL注入是发生在编译的过程中，因为恶意注入了某些特殊字符，最后被编译成了恶意的执行操作。而预编译机制则可以很好的防止SQL注入。
+
+maven 多项目下编译jar 需先把根项目install 
+
+idea ctrl + f12 列出类所有方法
+
+cmd 
+start cmd /k 新开一个窗口
+start /b 在后头执行一个程序 但不能关闭此cmd 不然还是会停止
+>ums-eureka.log 将输出打印在文本
+start cmd /k "title eureka &&start /b  java -jar -Dspring.config.location=file:config\eureka.properties ums-eureka.jar >ums-eureka.log" 
+
+//防止页面后退
+history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+	history.pushState(null, null, document.URL);
+});
+
+git pull 远程库 远程分支:本地分支
+git push 远程库 本地分支:远程分支
+
+
+feign 超时配置（在feign 客户端配置）（修改默认配置）
+feign.client.config.default.read-timeout=12000
+feign.client.config.default.connect-timeout=10000
+
+de配置生效
+feign.client.default-config=de
+feign.client.config.de.read-timeout=12000
+feign.client.config.de.connect-timeout=10000
+
+
+maven-plugin
+package -Dmaven.test.skip=true 跳过测试
+
+
+
+
+
+
+
+
+
+
+
+sql 优化
+
+1.对查询进行优化，要尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引。
+
+
+2.应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描，如：
+
+select id from t where num is null
+最好不要给数据库留NULL，尽可能的使用 NOT NULL填充数据库.
+
+备注、描述、评论之类的可以设置为 NULL，其他的，最好不要使用NULL。
+
+不要以为 NULL 不需要空间，比如：char(100) 型，在字段建立时，空间就固定了， 不管是否插入值（NULL也包含在内），都是占用 100个字符的空间的，如果是varchar这样的变长字段， null 不占用空间。
+
+
+可以在num上设置默认值0，确保表中num列没有null值，然后这样查询：
+
+select id from t where num = 0
+
+3.应尽量避免在 where 子句中使用 != 或 <> 操作符，否则将引擎放弃使用索引而进行全表扫描。
+
+4.应尽量避免在 where 子句中使用 or 来连接条件，如果一个字段有索引，一个字段没有索引，将导致引擎放弃使用索引而进行全表扫描，如：
+
+select id from t where num=10 or Name = 'admin'
+可以这样查询：
+
+select id from t where num = 10
+union all
+select id from t where Name = 'admin'
+
+5.in 和 not in 也要慎用，否则会导致全表扫描，如：
+
+select id from t where num in(1,2,3)
+对于连续的数值，能用 between 就不要用 in 了：
+
+select id from t where num between 1 and 3
+很多时候用 exists 代替 in 是一个好的选择：
+
+select num from a where num in(select num from b)
+用下面的语句替换：
+
+select num from a where exists(select 1 from b where num=a.num)
+ 
+
+6.下面的查询也将导致全表扫描：
+
+select id from t where name like ‘%abc%’
+若要提高效率，可以考虑全文检索。
+
+7.如果在 where 子句中使用参数，也会导致全表扫描。因为SQL只有在运行时才会解析局部变量，但优化程序不能将访问计划的选择推迟到运行时；它必须在编译时进行选择。然 而，如果在编译时建立访问计划，变量的值还是未知的，因而无法作为索引选择的输入项。如下面语句将进行全表扫描：
+
+select id from t where num = @num
+可以改为强制查询使用索引：
+
+select id from t with(index(索引名)) where num = @num
+.应尽量避免在 where 子句中对字段进行表达式操作，这将导致引擎放弃使用索引而进行全表扫描。如：
+
+select id from t where num/2 = 100
+应改为:
+
+select id from t where num = 100*2
+
+9.应尽量避免在where子句中对字段进行函数操作，这将导致引擎放弃使用索引而进行全表扫描。如：
+
+select id from t where substring(name,1,3) = ’abc’       -–name以abc开头的id
+select id from t where datediff(day,createdate,’2005-11-30′) = 0    -–‘2005-11-30’    --生成的id
+应改为:
+
+select id from t where name like 'abc%'
+select id from t where createdate >= '2005-11-30' and createdate < '2005-12-1'
+
+10.不要在 where 子句中的“=”左边进行函数、算术运算或其他表达式运算，否则系统将可能无法正确使用索引。
+
+11.在使用索引字段作为条件时，如果该索引是复合索引，那么必须使用到该索引中的第一个字段作为条件时才能保证系统使用该索引，否则该索引将不会被使用，并且应尽可能的让字段顺序与索引顺序相一致。
+
+12.不要写一些没有意义的查询，如需要生成一个空表结构：
+
+select col1,col2 into #t from t where 1=0
+这类代码不会返回任何结果集，但是会消耗系统资源的，应改成这样：
+create table #t(…)
+
+13.Update 语句，如果只更改1、2个字段，不要Update全部字段，否则频繁调用会引起明显的性能消耗，同时带来大量日志。
+
+14.对于多张大数据量（这里几百条就算大了）的表JOIN，要先分页再JOIN，否则逻辑读会很高，性能很差。
+
+15.select count(*) from table；这样不带任何条件的count会引起全表扫描，并且没有任何业务意义，是一定要杜绝的。
+
+
+16.索引并不是越多越好，索引固然可以提高相应的 select 的效率，但同时也降低了 insert 及 update 的效率，因为 insert 或 update 时有可能会重建索引，所以怎样建索引需要慎重考虑，视具体情况而定。一个表的索引数最好不要超过6个，若太多则应考虑一些不常使用到的列上建的索引是否有 必要。
+
+17.应尽可能的避免更新 clustered 索引数据列，因为 clustered 索引数据列的顺序就是表记录的物理存储顺序，一旦该列值改变将导致整个表记录的顺序的调整，会耗费相当大的资源。若应用系统需要频繁更新 clustered 索引数据列，那么需要考虑是否应将该索引建为 clustered 索引。
+
+18.尽量使用数字型字段，若只含数值信息的字段尽量不要设计为字符型，这会降低查询和连接的性能，并会增加存储开销。这是因为引擎在处理查询和连 接时会逐个比较字符串中每一个字符，而对于数字型而言只需要比较一次就够了。
+
+19.尽可能的使用 varchar/nvarchar 代替 char/nchar ，因为首先变长字段存储空间小，可以节省存储空间，其次对于查询来说，在一个相对较小的字段内搜索效率显然要高些。
+
+20.任何地方都不要使用 select * from t ，用具体的字段列表代替“*”，不要返回用不到的任何字段。
+
+21.尽量使用表变量来代替临时表。如果表变量包含大量数据，请注意索引非常有限（只有主键索引）。
+
+22. 避免频繁创建和删除临时表，以减少系统表资源的消耗。临时表并不是不可使用，适当地使用它们可以使某些例程更有效，例如，当需要重复引用大型表或常用表中的某个数据集时。但是，对于一次性事件， 最好使用导出表。
+
+23.在新建临时表时，如果一次性插入数据量很大，那么可以使用 select into 代替 create table，避免造成大量 log ，以提高速度；如果数据量不大，为了缓和系统表的资源，应先create table，然后insert。
+
+24.如果使用到了临时表，在存储过程的最后务必将所有的临时表显式删除，先 truncate table ，然后 drop table ，这样可以避免系统表的较长时间锁定。
+
+25.尽量避免使用游标，因为游标的效率较差，如果游标操作的数据超过1万行，那么就应该考虑改写。
+
+26.使用基于游标的方法或临时表方法之前，应先寻找基于集的解决方案来解决问题，基于集的方法通常更有效。
+
+27.与临时表一样，游标并不是不可使用。对小型数据集使用 FAST_FORWARD 游标通常要优于其他逐行处理方法，尤其是在必须引用几个表才能获得所需的数据时。在结果集中包括“合计”的例程通常要比使用游标执行的速度快。如果开发时 间允许，基于游标的方法和基于集的方法都可以尝试一下，看哪一种方法的效果更好。
+
+28.在所有的存储过程和触发器的开始处设置 SET NOCOUNT ON ，在结束时设置 SET NOCOUNT OFF 。无需在执行存储过程和触发器的每个语句后向客户端发送 DONE_IN_PROC 消息。
+
+29.尽量避免大事务操作，提高系统并发能力。
+
+30.尽量避免向客户端返回大数据量，若数据量过大，应该考虑相应需求是否合理。
+
+查询最近12个月的数据
+SELECT m.ACTION_ID,m.REPORT_TIME FROM problem m
+where REPORT_TIME >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH) AND m.ACTION_ID is null
+;
+
+实际案例分析：拆分大的 DELETE 或INSERT 语句，批量提交SQL语句
+　　如果你需要在一个在线的网站上去执行一个大的 DELETE 或 INSERT 查询，你需要非常小心，要避免你的操作让你的整个网站停止相应。因为这两个操作是会锁表的，表一锁住了，别的操作都进不来了。
+　　Apache 会有很多的子进程或线程。所以，其工作起来相当有效率，而我们的服务器也不希望有太多的子进程，线程和数据库链接，这是极大的占服务器资源的事情，尤其是内存。
+　　如果你把你的表锁上一段时间，比如30秒钟，那么对于一个有很高访问量的站点来说，这30秒所积累的访问进程/线程，数据库链接，打开的文件数，可能不仅仅会让你的WEB服务崩溃，还可能会让你的整台服务器马上挂了。
+　　所以，如果你有一个大的处理，你一定把其拆分，使用 LIMIT oracle(rownum),sqlserver(top)条件是一个好的方法。下面是一个mysql示例：
+
+复制代码
+while(1){
+
+ 　　//每次只做1000条
+
+　　 mysql_query(“delete from logs where log_date <= ’2012-11-01’ limit 1000”);
+
+ 　　if(mysql_affected_rows() == 0){
+
+　　 　　//删除完成，退出！
+　　 　　break；
+　　}
+
+//每次暂停一段时间，释放表让其他进程/线程访问。
+usleep(50000)
+
+}
+sql case when 多条件查询
+
+
